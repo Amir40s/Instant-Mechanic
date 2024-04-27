@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768514970805",
+    "project_id": "instant-mechanic-app-2eae8",
+    "storage_bucket": "instant-mechanic-app-2eae8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768514970805:android:3f8913d1393aafcb1cdafc",
+        "android_client_info": {
+          "package_name": "com.example.car_mechanics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAywjDaeAh1aKKC3x05LUKtyMiIYvP6pCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
