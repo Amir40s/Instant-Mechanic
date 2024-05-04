@@ -1,9 +1,6 @@
-import 'package:car_mechanics/screens/owner_screens/owner_home_screen/owner_home_screen.dart';
-import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
 
-import '../../../firebase_services/firebase_services.dart';
 import '../../../helpers/colors.dart';
 import '../../../helpers/helper_text.dart';
 import '../../../helpers/input_fields.dart';

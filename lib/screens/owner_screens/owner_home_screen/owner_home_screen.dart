@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:car_mechanics/helpers/helper_text.dart';
 import 'package:car_mechanics/helpers/images_path.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/add_details/add_detail.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/my_garage.dart';
 import 'package:car_mechanics/screens/owner_screens/owner_home_screen/components/auto_text_slider.dart';
 import 'package:car_mechanics/screens/owner_screens/owner_home_screen/components/custom_container.dart';
@@ -65,7 +66,10 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
           children: [
             DrawerContainer(),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
-            DrawerTile(text: "Add Garage",icon: Icons.garage_sharp,),
+            DrawerTile(text: "Add Garage",icon: Icons.garage_sharp,onTap: (){
+              Get.back();
+              Get.to(()=>AddDetail());
+            },),
             DrawerTile(text: "Logout",icon: Icons.logout_sharp,onTap: (){
               logOutDialogueBox();
             }),
@@ -123,7 +127,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    OwnerScreenContainer(image: ImagesPath.GARAGE_IMAGE,text: "My Garage",width: 42.w, onTap: () {
+                    OwnerScreenContainer(image: ImagesPath.GARAGE_IMAGE,text: "My Shop",width: 42.w, onTap: () {
                       Get.to(()=>MyGarageScreen());
                     },),
                     OwnerScreenContainer(image: ImagesPath.BOOKING_IMAGE,text: "My Booking",width: 42.w, onTap: () {  },),

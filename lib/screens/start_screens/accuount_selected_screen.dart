@@ -4,6 +4,7 @@ import 'package:car_mechanics/helpers/submit_button.dart';
 import 'package:car_mechanics/screens/start_screens/owner_start_screen/owner_activity.dart';
 import 'package:car_mechanics/screens/start_screens/owner_start_screen/owner_start_services/owner_start_services.dart';
 import 'package:car_mechanics/screens/start_screens/user_start_screens/user_activity.dart';
+import 'package:car_mechanics/screens/start_screens/user_start_screens/user_start_services/user_start_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class AccountSelectedScreen extends StatelessWidget {
   AccountSelectedScreen({super.key});
 
   OwnerStartServices ownerStartServices = OwnerStartServices();
+  UserStartServices userStartServices = UserStartServices();
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +61,13 @@ class AccountSelectedScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SubmitButton(title: "GARAGE OWNER", press: ()async{
+                        SubmitButton(title: "Mechanic", press: ()async{
                           ownerStartServices.isLogin(context);
                         }),
                         SubmitButton(title: "I'M USER", press: (){
-                          Get.to(()=>UserLogInActivityScreens());
+                          userStartServices.isLogin(context);
                         },
                           bgColor: Colors.grey.shade300,bdColor: appColor,textColor: appColor,),
-
                       ],
                     ),
                   ),

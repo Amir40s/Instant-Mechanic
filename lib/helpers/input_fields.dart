@@ -19,12 +19,15 @@ class InputField extends StatelessWidget {
     this.hintText,
     this.maxLength,
     this.prefixIcon,
-    this.obscureText = false
+    this.obscureText = false,
+    this.onTap
   });
+  VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
       validator: (fieldValue){
         if(fieldValue!.isEmpty){
           return "required field";
@@ -34,7 +37,7 @@ class InputField extends StatelessWidget {
       },
       maxLines: maxLines,
       obscureText: obscureText,
-      textInputAction: textInputAction,
+      textInputAction: textInputAction ?? TextInputAction.next,
       keyboardType: type,
       style: TextStyle(
         fontSize: 12,

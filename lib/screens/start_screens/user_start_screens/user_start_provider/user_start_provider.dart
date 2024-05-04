@@ -3,12 +3,24 @@ import 'package:get/get.dart';
 
 import '../../../../firebase_services/firebase_services.dart';
 import '../../../../utils/toast_msg.dart';
-import '../../../owner_screens/owner_home_screen/owner_home_screen.dart';
+import '../../../user_screens/user_home_screen.dart';
 
-class OwnerStartProvider extends ChangeNotifier{
-
+class UserStartProvider extends ChangeNotifier{
   bool isLoading = false;
-
+  signIn(String emailC,String passwordC){
+    isLoading = true;
+    auth.signInWithEmailAndPassword(email: emailC, password: passwordC)
+        .then((value) {
+      Get.off(()=>UserHomeScreen());
+      isLoading = false;
+      notifyListeners();
+    }).onError((error, stackTrace) {
+      ToastMsg().toastMsg(error.toString());
+      isLoading = false;
+      notifyListeners();
+    });
+    notifyListeners();
+  }
   void signup(String emailC,String nameC,String phoneC,String passwordC) async {
     isLoading = true;
     auth.createUserWithEmailAndPassword(
@@ -16,38 +28,22 @@ class OwnerStartProvider extends ChangeNotifier{
         password: passwordC)
         .then((value) async {
       String? userUID = auth.currentUser!.uid;
-      await fireStore.collection("GarageOwners").doc(userUID).set({
+      await fireStore.collection("UserOwners").doc(userUID).set({
         "email": emailC,
         "name": nameC,
         "phone": phoneC,
         "userUID": userUID,
-        "type" : "Garage Owner"
+        "type" : "User"
       }).whenComplete(() {
-        Get.off(()=>OwnerHomeScreen());
+        Get.off(()=>UserHomeScreen());
         isLoading = false;
         notifyListeners();
       });
     }).onError((error, stackTrace) {
-      isLoading = false;
       ToastMsg().toastMsg(error.toString());
+      isLoading = false;
       notifyListeners();
     });
     notifyListeners();
   }
-
-  void signIn(String emailC,String passwordC){
-    isLoading = true;
-    auth.signInWithEmailAndPassword(email: emailC, password: passwordC)
-        .then((value) {
-      isLoading = false;
-      Get.off(()=>OwnerHomeScreen());
-      notifyListeners();
-    }).onError((error, stackTrace) {
-      isLoading = false;
-      ToastMsg().toastMsg(error.toString());
-      notifyListeners();
-    });
-    notifyListeners();
-  }
-
 }

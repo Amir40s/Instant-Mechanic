@@ -5,7 +5,7 @@ import 'colors.dart';
 class SubmitButton extends StatelessWidget {
   const SubmitButton({
     super.key,
-    required this.title,
+    this.title,
     this.icon,
     required this.press,
     this.height,

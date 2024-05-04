@@ -1,3 +1,4 @@
+import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
 
@@ -14,19 +15,12 @@ import 'owner_start_provider/owner_start_provider.dart';
 
 class OwnerSignUp extends StatelessWidget {
   OwnerSignUp({super.key});
-
   var nameC = TextEditingController();
-
   var passwordC = TextEditingController();
-
   var confirmPasswordC = TextEditingController();
-
   var emailC = TextEditingController();
-
   var phoneC = TextEditingController();
-
   var formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Consumer<OwnerStartProvider>(builder: (context,value,child){
@@ -59,6 +53,8 @@ class OwnerSignUp extends StatelessWidget {
                   if(formKey.currentState!.validate()){
                     if(confirmPasswordC.text.toString() == passwordC.text.toString()){
                       value.signup(emailC.text.toString(), nameC.text.toString(), phoneC.text.toString(),passwordC.text.toString());
+                    }else{
+                      ToastMsg().toastMsg("Incorrect Confirm Password!");
                     }
                   }
                 })

@@ -36,7 +36,7 @@ class UserLogInActivityScreens extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget1(text: "User Account", fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: appBarTextColor),
+                    TextWidget1(text: "User Account", fontSize: 18.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: appBarTextColor),
                     const TabBar(
                         indicatorColor: Colors.white,
                         dividerColor: appColor,

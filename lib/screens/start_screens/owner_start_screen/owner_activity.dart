@@ -35,7 +35,7 @@ class OwnerLogInActivityScreens extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget1(text: "Garage Owner", fontSize: 18.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: appBarTextColor),
+                    TextWidget1(text: "Mechanic", fontSize: 18.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: appBarTextColor),
                     const TabBar(
                         indicatorColor: Colors.white,
                         dividerColor: appColor,
