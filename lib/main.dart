@@ -1,4 +1,5 @@
 import 'package:car_mechanics/helpers/colors.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/my_sevices/provider/owner_services_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/update_garage_details/provider/update_garage_details_provider.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context)=>ShopDetailsUpdateProvider()),
             ChangeNotifierProvider(create: (context)=>OwnerServicesProvider()),
             ChangeNotifierProvider(create: (context)=>UpdateServiceDetailProvider()),
+            ChangeNotifierProvider(create: (context)=>GoogleProvider()),
           ],
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,

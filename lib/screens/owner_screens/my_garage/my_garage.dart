@@ -72,7 +72,7 @@ class MyGarageScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextWidget(text: doc['addDate'].toString(), fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                      SizedBox(height: 22.h,width:90.w ,child: Image.file(fit: BoxFit.fill,File(doc["imagePath"].toString())),),
+                      SizedBox(height: 22.h,width:90.w ,child: Image.network(fit: BoxFit.fill,doc["imagePath"]),),
                       TextWidget(text: "Shop Name :  ${doc['garageName']}", fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
                       TextWidget(text: "Shop Owner Name :  ${doc['garageOwnerName']}", fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
                     ],

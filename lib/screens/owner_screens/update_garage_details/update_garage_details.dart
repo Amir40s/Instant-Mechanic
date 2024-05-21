@@ -44,7 +44,7 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
         backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: appColor,
-          title: TextWidget(text: "Add Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: Colors.white),
+          title: TextWidget(text: "Update Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: Colors.white),
           actions: [
             TextButton(onPressed: (){
               garageUpDateP.deleteDetails(widget.id);
@@ -67,7 +67,7 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                         onTap: ()async{
                           garageUpDateP.pickImage();
                         },
-                        child: SizedBox(width: 100.w,height: 25.h,child:value.image == null ? Image.file(File(value.imagePath),fit: BoxFit.fill,) :Image.file(fit: BoxFit.fill,File(value.image!.path)))),
+                        child: SizedBox(width: 100.w,height: 25.h,child:value.image == null ? Image.network(value.imagePath,fit: BoxFit.fill,) : Image.file(File(value.image!.path),fit: BoxFit.fill,))),
                     SizedBox(height: 30,),
                     Form(
                       key: formKey,
@@ -104,11 +104,12 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                     SizedBox(height: 20,),
                     SubmitButton(title: "Update", press: (){
                       if(formKey.currentState!.validate()){
-                        if(value.image != null){
-                           value.updateDetail(widget.id.toString());
-                        }else{
-                          ToastMsg().toastMsg("Update Image!");
-                        }
+                        value.updateDetail(widget.id.toString());
+                        // if(value.imagePath == ""){
+                        //
+                        // }else{
+                        //   ToastMsg().toastMsg("Update Image!");
+                        // }
                       }
                     }),
                     // SubmitButton(title: "Address", press: ()async{

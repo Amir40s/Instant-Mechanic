@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:car_mechanics/firebase_services/firebase_services.dart';
 import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +31,7 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
   var garageOwnerC = TextEditingController();
   var garageContactC = TextEditingController();
   var garageBioC = TextEditingController();
-  var garageAddressC = TextEditingController();
+  // var garageAddressC = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
 
@@ -41,6 +42,7 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
   @override
   Widget build(BuildContext context) {
     var garageP = Provider.of<GarageProvider>(context,listen: false);
+    var googleP = Provider.of<GoogleProvider>(context,listen: false);
     double fieldH = 10;
     return Scaffold(
       backgroundColor: bgColor,
@@ -88,10 +90,10 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
                         InputField(inputController: garageBioC,maxLines: 2,hintText: "Garage Bio",),
                         SizedBox(height: fieldH,),
                         TextWidget(text: "Garage Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-                        InputField(inputController: garageAddressC,maxLines: 2,hintText: "Garage Address",type: TextInputType.text,
-                        //   onTap: (){
-                        //    Get.to(()=>GoogleMapScreen());
-                        // },
+                        InputField(inputController: googleP.searchController,maxLines: 2,hintText: "Garage Address",type: TextInputType.none,
+                          onTap: (){
+                           Get.to(()=>GoogleMapScreen());
+                        },
                         ),
                       ],
                     ),
@@ -106,7 +108,7 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
                         firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref("/${auth.currentUser!.uid}  ${garageP.image!.path.toString()}");
                         firebase_storage.UploadTask uploadImage = ref.putFile(File(garageP.image!.path.toString()));
                         await Future.value(uploadImage);
-                        value.addDetail(garageNameC.text.toString(), garageOwnerC.text.toString(), garageContactC.text.toString(), garageBioC.text.toString(), garageAddressC.text.toString());
+                        value.addDetail(garageNameC.text.toString(), garageOwnerC.text.toString(), garageContactC.text.toString(), garageBioC.text.toString());
                       }else{
                         ToastMsg().toastMsg("Add Image!");
                       }

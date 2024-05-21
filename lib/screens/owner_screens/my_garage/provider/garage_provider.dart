@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
 import '../../../../utils/toast_msg.dart';
+import '../google_map/google_provider/google_provider.dart';
 
 
 class GarageProvider extends ChangeNotifier{
+
+
+  var garageAddressC = TextEditingController();
 
   bool isLoading = false;
 
@@ -32,12 +36,14 @@ class GarageProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  addDetail(String garageNameC,String garageOwnerC,String garageContactC,String garageBioC,String garageAddressC)async{
+  addDetail(String garageNameC,String garageOwnerC,String garageContactC,String garageBioC)async{
+    isLoading = true;
+    notifyListeners();
     var userUid = auth.currentUser!.uid;
     String id = DateTime.now().millisecondsSinceEpoch.toString();
     // List<Location> locations = await locationFromAddress(garageAddressC);
     // stAdd = "${locations.last.latitude.toString()} "" ${locations.last.longitude.toString()}";
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref("/${auth.currentUser!.uid} "" $id");
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(id);
     firebase_storage.UploadTask uploadImage = ref.putFile(File(image!.path.toString()));
     await Future.value(uploadImage).then((value) async {
       isLoading = true;
@@ -49,9 +55,9 @@ class GarageProvider extends ChangeNotifier{
             "garageOwnerName" : garageOwnerC,
             "garageContact" : garageContactC,
             "garageBio" : garageBioC,
-            "garageAddress" : garageAddressC,
-            // "garageAddressLatitude" : locations.last.latitude.toString(),
-            // "garageAddressLongitude" : locations.last.longitude.toString(),
+            // "garageAddress" : garageAddressC.text,
+            "garageAddressLatitude" : garageLatitude,
+            "garageAddressLongitude" : garageLongitude,
             "id" : id,
             "imagePath" : imageUrl.toString(),
           }).whenComplete(() {
@@ -66,9 +72,6 @@ class GarageProvider extends ChangeNotifier{
     });
     notifyListeners();
   }
-
-
-
 }
 
 
