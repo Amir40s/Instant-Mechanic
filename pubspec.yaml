@@ -38,7 +38,7 @@ dependencies:
   provider: ^6.1.2
   get: ^4.6.6
   flutter_sizer: ^1.0.5
-  device_preview: ^1.1.0
+#  device_preview: ^1.1.0
   carousel_slider: ^4.2.1
   image_picker: ^1.0.7
   firebase_core: ^2.25.5
@@ -46,12 +46,13 @@ dependencies:
   cloud_firestore: ^4.15.6
   firebase_storage: ^11.6.7
   fluttertoast: ^8.2.5
-  intl: ^0.18.1
+  intl: any
   google_maps_flutter: ^2.6.1
   geocoding: ^3.0.0
-  geolocator: ^11.0.0
+  geolocator: ^12.0.0
   uuid: ^4.4.0
   http: ^1.2.1
+  show_up_animation: ^2.0.0
 
 
 
@@ -64,7 +65,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

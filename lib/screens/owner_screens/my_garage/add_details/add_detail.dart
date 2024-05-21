@@ -1,27 +1,31 @@
 import 'dart:io';
+import 'package:car_mechanics/firebase_services/firebase_services.dart';
 import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:car_mechanics/utils/toast_msg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../../../helpers/colors.dart';
 import '../../../../helpers/helper_text.dart';
 import '../../../../helpers/images_path.dart';
 import '../google_map/google_map.dart';
 
-class AddDetail extends StatefulWidget {
-  AddDetail({super.key});
+class ShopAddDetail extends StatefulWidget {
+  ShopAddDetail({super.key});
 
   @override
-  State<AddDetail> createState() => _AddDetailState();
+  State<ShopAddDetail> createState() => _ShopAddDetailState();
 }
 
-class _AddDetailState extends State<AddDetail> {
+class _ShopAddDetailState extends State<ShopAddDetail> {
   var garageNameC = TextEditingController();
   var garageOwnerC = TextEditingController();
   var garageContactC = TextEditingController();
@@ -29,6 +33,8 @@ class _AddDetailState extends State<AddDetail> {
   var garageAddressC = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   String stAdd = "";
 
@@ -82,10 +88,10 @@ class _AddDetailState extends State<AddDetail> {
                         InputField(inputController: garageBioC,maxLines: 2,hintText: "Garage Bio",),
                         SizedBox(height: fieldH,),
                         TextWidget(text: "Garage Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-                        InputField(inputController: garageAddressC,maxLines: 2,hintText: "Garage Address",type: TextInputType.none,
-                          onTap: (){
-                           Get.to(()=>GoogleMapScreen());
-                        },
+                        InputField(inputController: garageAddressC,maxLines: 2,hintText: "Garage Address",type: TextInputType.text,
+                        //   onTap: (){
+                        //    Get.to(()=>GoogleMapScreen());
+                        // },
                         ),
                       ],
                     ),
@@ -93,22 +99,26 @@ class _AddDetailState extends State<AddDetail> {
                   SizedBox(height: 20,),
                   TextWidget1(text: stAdd, fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: appColor),
                   SizedBox(height: 20,),
-                  SubmitButton(title: "Next", press: (){
+                  SubmitButton(title: "Next", press: () async {
                     if(formKey.currentState!.validate()){
                       if(value.image != null){
+                        // var fileName = DateTime.now();
+                        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref("/${auth.currentUser!.uid}  ${garageP.image!.path.toString()}");
+                        firebase_storage.UploadTask uploadImage = ref.putFile(File(garageP.image!.path.toString()));
+                        await Future.value(uploadImage);
                         value.addDetail(garageNameC.text.toString(), garageOwnerC.text.toString(), garageContactC.text.toString(), garageBioC.text.toString(), garageAddressC.text.toString());
                       }else{
                         ToastMsg().toastMsg("Add Image!");
                       }
                     }
                   }),
-                  SubmitButton(title: "Address", press: ()async{
-                    List<Location> locations = await locationFromAddress(garageAddressC.text.toString());
-                    setState(() {
-                      stAdd = "${locations.last.latitude.toString()} "" ${locations.last.longitude.toString()}";
-                    });
-                    debugPrint("${stAdd}");
-                  }),
+                  // SubmitButton(title: "Address", press: ()async{
+                  //   List<Location> locations = await locationFromAddress(garageAddressC.text.toString());
+                  //   setState(() {
+                  //     stAdd = "${locations.last.latitude.toString()} "" ${locations.last.longitude.toString()}";
+                  //   });
+                  //   debugPrint("${stAdd}");
+                  // }),
                 ],
               ),
             ],

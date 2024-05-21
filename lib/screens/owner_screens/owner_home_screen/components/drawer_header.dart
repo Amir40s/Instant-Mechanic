@@ -33,7 +33,6 @@ class _DrawerContainerState extends State<DrawerContainer> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 35),
-      height: 30.h,
       width: 100.w,
       color: appColor,
       child: Column(
@@ -57,6 +56,7 @@ class _DrawerContainerState extends State<DrawerContainer> {
               ),
             ),
           ),
+          SizedBox(height: 20,),
           TextWidget1(text: "Abdullah Naveed", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: Colors.white),
         ],
       ),

@@ -1,15 +1,13 @@
-import 'package:car_mechanics/screens/owner_screens/my_garage/add_details/add_detail.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../helpers/helper_text.dart';
 
 class AddNew extends StatelessWidget {
-  const AddNew({super.key});
+  AddNew({super.key,required this.onTap});
+  VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +16,7 @@ class AddNew extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
-      onTap: (){
-        Get.to(()=>AddDetail());
-        garageP.image = null;
-
-      },
+      onTap: onTap,
       child: Container(
         height: 40,
         margin: EdgeInsets.symmetric(horizontal: 20),

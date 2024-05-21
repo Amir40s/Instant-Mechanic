@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:car_mechanics/helpers/helper_text.dart';
 import 'package:car_mechanics/helpers/images_path.dart';
+import 'package:car_mechanics/screens/owner_screens/my_booking/my_booking.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/add_details/add_detail.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/my_garage.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/my_sevices/my_services.dart';
 import 'package:car_mechanics/screens/owner_screens/owner_home_screen/components/auto_text_slider.dart';
 import 'package:car_mechanics/screens/owner_screens/owner_home_screen/components/custom_container.dart';
 import 'package:car_mechanics/screens/owner_screens/owner_home_screen/components/drawer_header.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../firebase_services/firebase_services.dart';
 import '../../../helpers/colors.dart';
@@ -57,6 +61,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var garageP = Provider.of<GarageProvider>(context);
     return  Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -68,7 +73,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
             DrawerTile(text: "Add Garage",icon: Icons.garage_sharp,onTap: (){
               Get.back();
-              Get.to(()=>AddDetail());
+              garageP.image = null;
+              Get.to(()=>ShopAddDetail());
             },),
             DrawerTile(text: "Logout",icon: Icons.logout_sharp,onTap: (){
               logOutDialogueBox();
@@ -79,7 +85,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: appColor,
-        title: TextWidget(text: "Marquee Owner Demo Version", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: Colors.white),
+        title: TextWidget(text: "Shop Owner", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: Colors.white),
       ),
       body: Column(
         children: [
@@ -130,11 +136,15 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                     OwnerScreenContainer(image: ImagesPath.GARAGE_IMAGE,text: "My Shop",width: 42.w, onTap: () {
                       Get.to(()=>MyGarageScreen());
                     },),
-                    OwnerScreenContainer(image: ImagesPath.BOOKING_IMAGE,text: "My Booking",width: 42.w, onTap: () {  },),
+                    OwnerScreenContainer(image: ImagesPath.BOOKING_IMAGE,text: "My Booking",width: 42.w, onTap: () {
+                      Get.to(()=>MyBooking());
+                    },),
                   ],
                 ),
                 SizedBox(height: 10,),
-                OwnerScreenContainer(image: ImagesPath.SERVICES_IMAGE,text: "My Services",width: Get.width, onTap: () {  },),
+                OwnerScreenContainer(image: ImagesPath.SERVICES_IMAGE,text: "My Services",width: Get.width, onTap: () {
+                  Get.to(()=>MyServices());
+                },),
               ],
             ),
           ),

@@ -1,11 +1,12 @@
 import 'package:car_mechanics/helpers/colors.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/my_sevices/provider/owner_services_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/update_garage_details/provider/update_garage_details_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/update_garage_services/provider/update_service_details_provider.dart';
 import 'package:car_mechanics/screens/start_screens/owner_start_screen/owner_start_provider/owner_start_provider.dart';
 import 'package:car_mechanics/screens/start_screens/splash_screen.dart';
 import 'package:car_mechanics/screens/start_screens/user_start_screens/user_start_provider/user_start_provider.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -18,9 +19,7 @@ void main()async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context)=> const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,13 +32,15 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context)=>OwnerStartProvider()),
             ChangeNotifierProvider(create: (context)=>UserStartProvider()),
             ChangeNotifierProvider(create: (context)=>GarageProvider()),
+            ChangeNotifierProvider(create: (context)=>ShopDetailsUpdateProvider()),
+            ChangeNotifierProvider(create: (context)=>OwnerServicesProvider()),
+            ChangeNotifierProvider(create: (context)=>UpdateServiceDetailProvider()),
           ],
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Car Mechanics',
-              locale: DevicePreview.locale(context),
-              builder: DevicePreview.appBuilder,
               theme: ThemeData(
+                iconTheme: IconThemeData(color: appColor),
                 appBarTheme: AppBarTheme(
                     backgroundColor: appColor,
                     iconTheme: IconThemeData(color: appBarTextColor),

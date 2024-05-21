@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../firebase_services/firebase_services.dart';
 import '../../../../utils/toast_msg.dart';
-import '../../../user_screens/user_home_screen.dart';
+import '../../../user_screens/user_home_screen/user_home_screen.dart';
 
 class UserStartProvider extends ChangeNotifier{
   bool isLoading = false;
