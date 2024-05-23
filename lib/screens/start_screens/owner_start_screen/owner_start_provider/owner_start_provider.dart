@@ -21,6 +21,7 @@ class OwnerStartProvider extends ChangeNotifier{
         "name": nameC,
         "phone": phoneC,
         "userUID": userUID,
+        "status": "pending",
         "type" : "Garage Owner"
       }).whenComplete(() {
         Get.off(()=>OwnerHomeScreen());

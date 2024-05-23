@@ -66,7 +66,7 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 10,),
-                    TextWidget(text: "Add Garage Cover Image", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
+                    TextWidget(text: "Add Mechanics Cover Image", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
                     InkWell(
                         onTap: ()async{
                           garageUpDateP.pickImage();
@@ -78,24 +78,24 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextWidget(text: "Garage Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                          TextWidget(text: "Mechanics Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                           SizedBox(height: fieldH,),
-                          InputField(inputController: garageUpDateP.garageNameC,hintText: "Garage Name",),
+                          InputField(inputController: garageUpDateP.garageNameC,hintText: "Mechanics Name",),
                           SizedBox(height: fieldH,),
-                          TextWidget(text: "Garage Owner Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
+                          TextWidget(text: "Mechanics Owner Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
                           SizedBox(height: fieldH,),
-                          InputField(inputController: garageUpDateP.garageOwnerC,hintText: "Garage Owner Name",),
+                          InputField(inputController: garageUpDateP.garageOwnerC,hintText: "Mechanics Owner Name",),
                           SizedBox(height: fieldH,),
-                          TextWidget(text: "Garage Contact Number", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                          TextWidget(text: "Mechanics Contact Number", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                           SizedBox(height: fieldH,),
-                          InputField(inputController: garageUpDateP.garageContactC,type: TextInputType.number,hintText: "Garage Contact Number",),
+                          InputField(inputController: garageUpDateP.garageContactC,type: TextInputType.number,hintText: "Mechanics Contact Number",),
                           SizedBox(height: fieldH,),
-                          TextWidget(text: "Garage Bio", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                          TextWidget(text: "Mechanics Bio", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                           SizedBox(height: fieldH,),
-                          InputField(inputController: garageUpDateP.garageBioC,maxLines: 2,hintText: "Garage Bio",),
+                          InputField(inputController: garageUpDateP.garageBioC,maxLines: 2,hintText: "Mechanics Bio",),
                           SizedBox(height: fieldH,),
-                          TextWidget(text: "Garage Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-                          InputField(inputController: garageUpDateP.garageAddressC,maxLines: 2,hintText: "Garage Address",type: TextInputType.text,
+                          TextWidget(text: "Mechanics Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                          InputField(inputController: garageUpDateP.garageAddressC,maxLines: 2,hintText: "Mechanics Address",type: TextInputType.text,
                               onTap: (){
                                Get.to(()=>UpdateGoogleMapAddress());
                             },

@@ -30,6 +30,7 @@ class OwnerHomeScreen extends StatefulWidget {
 
 class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
+
   logOutDialogueBox(){
     showDialog(
       context: context,
@@ -59,6 +60,15 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     );
   }
 
+  bool _isVerified = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     var garageP = Provider.of<GarageProvider>(context);
@@ -71,11 +81,15 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
           children: [
             DrawerContainer(),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
-            DrawerTile(text: "Add Garage",icon: Icons.garage_sharp,onTap: (){
-              Get.back();
-              garageP.image = null;
-              Get.to(()=>ShopAddDetail());
-            },),
+
+            Visibility(
+              visible: _isVerified,
+              child: DrawerTile(text: "Add Mechanics",icon: Icons.garage_sharp,onTap: (){
+                Get.back();
+                garageP.image = null;
+                Get.to(()=>ShopAddDetail());
+              },),
+            ),
             DrawerTile(text: "Logout",icon: Icons.logout_sharp,onTap: (){
               logOutDialogueBox();
             }),
@@ -107,10 +121,6 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                            height: 40,
-                            child: Image.asset(ImagesPath.NOTIFICATION_IMAGE)),
-                        TextWidget(text: "Weekend Discount Offers ❤", fontSize: 10.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appBarTextColor),
                         SizedBox(width: 1,)
                       ],
                     ),
@@ -122,6 +132,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             ],
           ),
           SizedBox(height: 20,),
+          if(_isVerified)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
             child: Column(
@@ -148,8 +159,28 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
               ],
             ),
           ),
+
+          if(_isVerified == false)
+          Text("Please wait for account Approval"),
         ],
       ),
     );
+  }
+
+  void checkUser() async{
+    await fireStore.collection("GarageOwners").doc(auth.currentUser?.uid.toString())
+        .get().then((value) => {
+          if (value.exists){
+            if(value.get("status") == "approved"){
+              setState(() {
+                _isVerified = true;
+              })
+            }else{
+              setState(() {
+                _isVerified = false;
+              })
+            }
+          }
+    });
   }
 }

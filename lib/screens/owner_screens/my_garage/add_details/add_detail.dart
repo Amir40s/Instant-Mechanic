@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:car_mechanics/firebase_services/firebase_services.dart';
 import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_map_provider.dart';
@@ -8,9 +7,7 @@ import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -61,7 +58,7 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(height: 10,),
-                  TextWidget(text: "Add Garage Cover Image", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
+                  TextWidget(text: "Add Mechanics Cover Image", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
                   InkWell(
                       onTap: ()async{
                         garageP.pickImage();
@@ -73,24 +70,24 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextWidget(text: "Garage Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                        TextWidget(text: "Mechanics Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                         SizedBox(height: fieldH,),
-                        InputField(inputController: garageNameC,hintText: "Garage Name",),
+                        InputField(inputController: garageNameC,hintText: "Mechanics Name",),
                         SizedBox(height: fieldH,),
-                        TextWidget(text: "Garage Owner Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
+                        TextWidget(text: "Mechanics Owner Name", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor,),
                         SizedBox(height: fieldH,),
-                        InputField(inputController: garageOwnerC,hintText: "Garage Owner Name",),
+                        InputField(inputController: garageOwnerC,hintText: "Mechanics Owner Name",),
                         SizedBox(height: fieldH,),
-                        TextWidget(text: "Garage Contact Number", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                        TextWidget(text: "Mechanics Contact Number", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                         SizedBox(height: fieldH,),
-                        InputField(inputController: garageContactC,type: TextInputType.number,hintText: "Garage Contact Number",),
+                        InputField(inputController: garageContactC,type: TextInputType.number,hintText: "Mechanics Contact Number",),
                         SizedBox(height: fieldH,),
-                        TextWidget(text: "Garage Bio", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                        TextWidget(text: "Mechanics Bio", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                         SizedBox(height: fieldH,),
-                        InputField(inputController: garageBioC,maxLines: 2,hintText: "Garage Bio",),
+                        InputField(inputController: garageBioC,maxLines: 2,hintText: "Mechanics Bio",),
                         SizedBox(height: fieldH,),
-                        TextWidget(text: "Garage Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-                        InputField(inputController: googleP.searchController,maxLines: 2,hintText: "Garage Address",type: TextInputType.none,
+                        TextWidget(text: "Mechanics Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+                        InputField(inputController: googleP.searchController,maxLines: 2,hintText: "Mechanics Address",type: TextInputType.none,
                           onTap: (){
                            Get.to(()=>GoogleMapScreen());
                         },
