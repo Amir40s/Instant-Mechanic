@@ -2,14 +2,18 @@ import 'dart:io';
 import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
 import 'package:car_mechanics/screens/owner_screens/update_garage_details/provider/update_garage_details_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/update_garage_details/update_google_map_address/update_google_map_address.dart';
 import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../helpers/colors.dart';
 import '../../../../helpers/helper_text.dart';
 import '../../../../helpers/images_path.dart';
+import '../my_garage/google_map/google_map.dart';
 
 class ShopUpdateDetail extends StatefulWidget {
   ShopUpdateDetail({super.key,this.id});
@@ -92,9 +96,9 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                           SizedBox(height: fieldH,),
                           TextWidget(text: "Garage Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
                           InputField(inputController: garageUpDateP.garageAddressC,maxLines: 2,hintText: "Garage Address",type: TextInputType.text,
-                            //   onTap: (){
-                            //    Get.to(()=>GoogleMapScreen());
-                            // },
+                              onTap: (){
+                               Get.to(()=>UpdateGoogleMapAddress());
+                            },
                           ),
                         ],
                       ),

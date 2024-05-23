@@ -125,7 +125,7 @@ class UserHomeScreen extends StatelessWidget {
               ),
             ),
             StreamBuilder(
-                stream: FirebaseFirestore.instance.collection("GarageOwners").snapshots(),
+                stream: FirebaseFirestore.instance.collection("GarageDetails").snapshots(),
                 builder: (context , AsyncSnapshot<QuerySnapshot> snapshot){
                   if(snapshot.connectionState == ConnectionState.waiting){
                     return CircularProgressIndicator();
@@ -139,39 +139,51 @@ class UserHomeScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       children: snapshot.data!.docs.map((doc) {
-                        return Container(
-                          margin: EdgeInsets.all(15.0),
-                          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: appBarTextColor,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Image.asset(height: 3.h,ImagesPath.BUILDING_ICON),
-                                  SizedBox(width: 10,),
-                                  TextWidget(text: "Shop Name", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                                ],
-                              ),
-                              SizedBox(height: 10,),
-                              Image.asset(ImagesPath.COVER_IMAGE),
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on_sharp),
-                                      SizedBox(width: 5,),
-                                      TextWidget(text: "Shop Address", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                                    ],
-                                  ),
-                                  Image.asset(ImagesPath.MAP_IMAGE,height: 4.h,),
-                                ],
-                              )
-                            ],
+                        return GestureDetector(
+                          onTap: (){
+                            Get.to(()=>GarageDetailScreen(imagePath: doc["imagePath"], shopName: doc['garageName'],
+                              ownerName: doc["garageOwnerName"], ownerPhone: doc["garageContact"],
+                              shopBio: doc["garageBio"],userUid: doc["userUid"], latitude: double.parse(doc["garageAddressLatitude"]), longitude: double.parse(doc["garageAddressLongitude"]),));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(15.0),
+                            padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: appBarTextColor,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Image.asset(height: 3.h,ImagesPath.BUILDING_ICON),
+                                    SizedBox(width: 10,),
+                                    TextWidget(text: doc["garageName"], fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
+                                  ],
+                                ),
+                                SizedBox(height: 10,),
+                                SizedBox(
+                                    height: 25.h,
+                                    width: 100.w,
+                                    child: Image.network(doc["imagePath"],fit: BoxFit.fill,)),
+                                SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.location_on_sharp),
+                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                            width: 60.w,
+                                            child: TextWidget(text: doc["garageAddress"], fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor)),
+                                      ],
+                                    ),
+                                    Image.asset(ImagesPath.MAP_IMAGE,height: 4.h,),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }).toList(),

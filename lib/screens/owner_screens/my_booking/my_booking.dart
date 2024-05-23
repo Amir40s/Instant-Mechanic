@@ -18,9 +18,9 @@ class MyBooking extends StatelessWidget {
         backgroundColor: appColor,
         title: TextWidget(text: "My Orders", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: Colors.white),
       ),
-     body: const Column(
+     body: Column(
        children: [
-         TabBar(
+         const TabBar(
              indicatorSize: TabBarIndicatorSize.tab,
              tabs: [
            Tab(
@@ -33,7 +33,7 @@ class MyBooking extends StatelessWidget {
          Expanded(child: TabBarView(
            children: [
              PendingScreen(),
-             CancelScreen()
+             const CancelScreen()
            ],
          ))
        ],

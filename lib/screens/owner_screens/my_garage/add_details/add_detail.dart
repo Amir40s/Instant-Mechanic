@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:car_mechanics/firebase_services/firebase_services.dart';
 import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
-import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_map_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:car_mechanics/utils/toast_msg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -105,6 +105,7 @@ class _ShopAddDetailState extends State<ShopAddDetail> {
                     if(formKey.currentState!.validate()){
                       if(value.image != null){
                         // var fileName = DateTime.now();
+                        value.isLoading = true;
                         firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref("/${auth.currentUser!.uid}  ${garageP.image!.path.toString()}");
                         firebase_storage.UploadTask uploadImage = ref.putFile(File(garageP.image!.path.toString()));
                         await Future.value(uploadImage);

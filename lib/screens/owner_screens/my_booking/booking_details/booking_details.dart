@@ -6,7 +6,16 @@ import '../../../../helpers/helper_text.dart';
 import 'custom_container.dart';
 
 class BookingDetails extends StatelessWidget {
-  const BookingDetails({super.key});
+  BookingDetails({super.key,required this.name,required this.bookingId,required this.phone,
+  required this.msg,required this.date,required this.time
+  });
+
+  String bookingId;
+  String name;
+  String phone;
+  String msg;
+  String date;
+  String time;
 
   @override
   Widget build(BuildContext context) {
@@ -45,48 +54,17 @@ class BookingDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 7,vertical: 10),
-                        height: 5.h,
-                        width: 40.w,
-                        decoration: BoxDecoration(
-                            color: appBarTextColor,
-                            borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                                color: bgColor
-                            )
-                        ),
-                        child: TextWidget(text: "Date", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: appColor),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 7,vertical: 10),
-                        height: 5.h,
-                        width: 40.w,
-                        decoration: BoxDecoration(
-                            color: appBarTextColor,
-                            borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                                color: bgColor
-                            )
-                        ),
-                        child: TextWidget(text: "Time", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: appColor),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: 10,),
                   TextWidget(text: "Booking Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                  CustomContainer().bookingContainer("Booking ID"),
-                  CustomContainer().bookingContainer("Name"),
-                  CustomContainer().bookingContainer("Phone"),
-                  CustomContainer().bookingContainer("Message"),
+                  CustomContainer().bookingContainer(bookingId),
+                  CustomContainer().bookingContainer(name),
+                  CustomContainer().bookingContainer(phone),
+                  CustomContainer().bookingContainer(msg),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomContainer().bookingContainer("Date",width: 42.w),
-                      CustomContainer().bookingContainer("Time",width: 42.w),
+                      CustomContainer().bookingContainer(date,width: 42.w),
+                      CustomContainer().bookingContainer(time,width: 42.w),
                     ],
                   ),
 

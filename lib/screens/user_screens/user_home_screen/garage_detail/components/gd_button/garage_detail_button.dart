@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
-import '../../../../../helpers/colors.dart';
-import '../../../../../helpers/helper_text.dart';
+import '../../../../../../helpers/colors.dart';
+import '../../../../../../helpers/helper_text.dart';
 
 class GDButton extends StatelessWidget {
   GDButton({super.key,this.icon,required this.text});

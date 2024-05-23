@@ -2,6 +2,7 @@ import 'package:car_mechanics/helpers/colors.dart';
 import 'package:car_mechanics/screens/user_screens/user_home_screen/garage_detail/components/garage_detail_map_container.dart';
 import 'package:car_mechanics/screens/user_screens/user_home_screen/garage_detail/components/garage_detail_tile.dart';
 import 'package:car_mechanics/screens/user_screens/user_home_screen/user_booking_screen/user_booking_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,10 +11,21 @@ import 'package:get/get.dart';
 
 import '../../../../helpers/helper_text.dart';
 import '../../../../helpers/images_path.dart';
-import 'components/garage_detail_button.dart';
+import 'components/gd_button/garage_detail_button.dart';
+import 'components/shop_direction_on_google_map.dart';
 
 class GarageDetailScreen extends StatelessWidget {
-  const GarageDetailScreen({super.key});
+  GarageDetailScreen({super.key,required this.imagePath,required this.shopName,required this.ownerName,
+  required this.ownerPhone,required this.shopBio,required this.userUid,required this.latitude,required this.longitude
+  });
+
+  String imagePath;
+  String shopName;
+  String ownerPhone;
+  String ownerName;
+  String shopBio;
+  String userUid;
+  double latitude,longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +42,7 @@ class GarageDetailScreen extends StatelessWidget {
             width: 100.w,
             padding: EdgeInsets.all(5.0),
             color: appBarTextColor,
-            child: Image.asset(ImagesPath.COVER_IMAGE,fit: BoxFit.fill,),
+            child: Image.network(imagePath,fit: BoxFit.fill,),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
@@ -46,7 +58,7 @@ class GarageDetailScreen extends StatelessWidget {
                       children: [
                         Image.asset(height: 3.h,ImagesPath.BUILDING_ICON),
                         SizedBox(width: 10,),
-                        TextWidget(text: "Shop Name", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor)
+                        TextWidget(text: shopName, fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor)
                       ],
                     ),
                     Row(
@@ -66,18 +78,18 @@ class GarageDetailScreen extends StatelessWidget {
                 TextWidget(text: "Bio", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
                 SizedBox(
                     width: 100.w,
-                    child: TextWidget(text: "bio details", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: Colors.grey)),
+                    child: TextWidget(text: shopBio, fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: Colors.grey)),
                 SizedBox(height: 10,),
                 InkWell(
                     onTap: (){
-                      Get.to(()=>UserBookingScreen());
+                      Get.to(()=>UserBookingScreen(userUid: userUid,));
                     },
                     child: GDButton(text: "Book Now",icon: CupertinoIcons.calendar,)),
                 SizedBox(height: 5,),
                 Divider(thickness: 1.2,color: appColor,),
                 TextWidget(text: "Shop Owner Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                GDTile(text: "Shop Owner Name", image: ImagesPath.WHATSAPP_IMAGE,icon: CupertinoIcons.person_fill,),
-                GDTile(text: "Shop Owner Phone", image: ImagesPath.PHONE_IMAGE,icon: Icons.phone_android,),
+                GDTile(text: ownerName, image: ImagesPath.WHATSAPP_IMAGE,icon: CupertinoIcons.person_fill,),
+                GDTile(text: ownerPhone, image: ImagesPath.PHONE_IMAGE,icon: Icons.phone_android,),
                 Divider(color: appColor,thickness: 1.2,),
                 Row(
                   children: [
@@ -87,7 +99,13 @@ class GarageDetailScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10,),
-                GDMap(),
+                GDMap(latitude: latitude, longitude: longitude,),
+                SizedBox(height: 20,),
+                GestureDetector(
+                    onTap: (){
+                      Get.to(()=>GDOnGoogleMap(latitude: latitude, longitude: longitude));
+                    },
+                    child: GDButton(text: "Get Direction",icon: Icons.directions,)),
               ],
             ),
           ),
@@ -98,40 +116,52 @@ class GarageDetailScreen extends StatelessWidget {
           ),
           SizedBox(
             width: 100.w,
-            child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context,index){
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: appBarTextColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.shade200,
-                          blurRadius: 1
-                      )
-                    ]
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(height: 10.h,ImagesPath.GARAGE_IMAGE),
-                    SizedBox(width: 20,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextWidget(text: "Category Name", fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                        SizedBox(height: 10,),
-                        TextWidget(text: "Charges Price", fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                      ],
-                    ),
-                  ],
-                ),
-              );
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance.collection("GarageOwners").doc(userUid).collection("garageServices").snapshots(),
+                builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot){
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if(snapshot.hasError){
+                    return TextWidget(text: "Some Error", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor);
+                  }
+                  return  ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: snapshot.data!.docs.map((doc){
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: appBarTextColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    blurRadius: 1
+                                )
+                              ]
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(height: 10.h,ImagesPath.GARAGE_IMAGE),
+                              SizedBox(width: 20,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(width: 50.w,child: TextWidget(text: doc["serviceCategory"], fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor)),
+                                  SizedBox(height: 10,),
+                                  SizedBox(width: 50.w,child: TextWidget(text: doc["serviceCharges"], fontSize: 14.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      );
             }),
           )
         ],

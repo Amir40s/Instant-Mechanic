@@ -3,18 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
 import '../../../../utils/toast_msg.dart';
-import '../google_map/google_provider/google_provider.dart';
+import '../google_map/google_provider/google_map_provider.dart';
 
 
 class GarageProvider extends ChangeNotifier{
 
 
-  var garageAddressC = TextEditingController();
+  var garageAddressC = "";
 
   bool isLoading = false;
 
@@ -40,22 +41,24 @@ class GarageProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
     var userUid = auth.currentUser!.uid;
+    List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(garageLatitude.toString()), double.parse(garageLongitude.toString()));
+
+    garageAddressC = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
+
     String id = DateTime.now().millisecondsSinceEpoch.toString();
-    // List<Location> locations = await locationFromAddress(garageAddressC);
-    // stAdd = "${locations.last.latitude.toString()} "" ${locations.last.longitude.toString()}";
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(id);
     firebase_storage.UploadTask uploadImage = ref.putFile(File(image!.path.toString()));
     await Future.value(uploadImage).then((value) async {
-      isLoading = true;
       var imageUrl = await ref.getDownloadURL();
-      fireStore.collection("GarageOwners").doc(userUid).collection("garageDetails").doc(id).set(
+      fireStore.collection("GarageDetails").doc(id).set(
           {
+            "userUid" : userUid,
             "addDate" : date,
             "garageName" : garageNameC,
             "garageOwnerName" : garageOwnerC,
             "garageContact" : garageContactC,
             "garageBio" : garageBioC,
-            // "garageAddress" : garageAddressC.text,
+            "garageAddress" : garageAddressC,
             "garageAddressLatitude" : garageLatitude,
             "garageAddressLongitude" : garageLongitude,
             "id" : id,

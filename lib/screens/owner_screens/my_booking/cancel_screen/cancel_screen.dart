@@ -19,7 +19,6 @@ class CancelScreen extends StatelessWidget {
             itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
-                  Get.to(()=>BookingDetails());
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),

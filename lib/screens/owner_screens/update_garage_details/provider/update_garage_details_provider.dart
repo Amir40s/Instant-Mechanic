@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/toast_msg.dart';
-import '../../my_garage/google_map/google_provider/google_provider.dart';
+import '../../my_garage/google_map/google_provider/google_map_provider.dart';
 
 class ShopDetailsUpdateProvider extends ChangeNotifier{
 
@@ -21,6 +21,7 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
   var garageBioC = TextEditingController();
   var garageAddressC = TextEditingController();
   String imagePath = "";
+  String userUid = "";
 
 
   bool isLoading = false;
@@ -40,6 +41,7 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery,);
     image = pickedImage;
+    imagePath = image!.path.toString();
     notifyListeners();
   }
 
@@ -49,10 +51,12 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     notifyListeners();
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(id);
     firebase_storage.UploadTask uploadImage = ref.putFile(File(image!.path.toString()));
+
+    debugPrint(imagePath);
     await Future.value(uploadImage).then((value) async {
       isLoading = true;
       var imageUrl = await ref.getDownloadURL();
-      fireStore.collection("GarageOwners").doc(userUid).collection("garageDetails").doc(id).update(
+      fireStore.collection("GarageDetails").doc(id).update(
           {
             "addDate" : date,
             "garageName" : garageNameC.text,
@@ -62,6 +66,7 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
             "garageAddressLatitude" : garageLatitude,
             "garageAddressLongitude" : garageLongitude,
             "imagePath" : imageUrl.toString(),
+            "userUid" : userUid,
             "update" : "updated"
           }).whenComplete(() {
         isLoading = false;
@@ -73,26 +78,6 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
         notifyListeners();
       });
     });
-    // var imageUrl = await ref.getDownloadURL();
-    // fireStore.collection("GarageOwners").doc(userUid).collection("garageDetails").doc(id).update(
-    //     {
-    //       "addDate" : date,
-    //       "garageName" : garageNameC.text,
-    //       "garageOwnerName" : garageOwnerC.text,
-    //       "garageContact" : garageContactC.text,
-    //       "garageBio" : garageBioC.text,
-    //       "garageAddress" : garageAddressC.text,
-    //       "imagePath" : imagePath,
-    //       "update" : "updated"
-    //     }).whenComplete(() {
-    //   isLoading = false;
-    //   ToastMsg().toastMsg("Data Saved");
-    //   notifyListeners();
-    // }).onError((error, stackTrace)  {
-    //   isLoading = false;
-    //   ToastMsg().toastMsg(error.toString());
-    //   notifyListeners();
-    // });
     notifyListeners();
   }
 
@@ -101,9 +86,10 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
 
 
   getDetail(String id)async{
+    debugPrint(imagePath);
     var userUid = auth.currentUser!.uid;
     isLoading = true;
-    await fireStore.collection("GarageOwners").doc(userUid).collection("garageDetails").doc(id).get().then((value) async {
+    await fireStore.collection("GarageDetails").doc(id).get().then((value) async {
       imagePath = value.get("imagePath");
       garageNameC.text = value.get("garageName");
       garageOwnerC.text = value.get("garageOwnerName");
@@ -111,6 +97,8 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
       garageBioC.text = value.get("garageBio");
       garageAddressLat = value.get("garageAddressLatitude");
       garageAddressLong = value.get("garageAddressLongitude");
+      userUid = value.get("userUid");
+
 
       List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(garageAddressLat.toString()), double.parse(garageAddressLong.toString()));
       
@@ -138,7 +126,7 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     var userUid = auth.currentUser!.uid;
     isLoading = true;
     notifyListeners();
-    await fireStore.collection("GarageOwners").doc(userUid).collection("garageDetails").doc(id).delete().whenComplete(() {
+    await fireStore.collection("GarageDetails").doc(id).delete().whenComplete(() {
       Get.back();
       isLoading = false;
       notifyListeners();

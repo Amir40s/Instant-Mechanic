@@ -18,6 +18,7 @@ class TextWidget extends StatelessWidget {
     return Text(
       text,
       textAlign: isTextCenter == true ? TextAlign.center: TextAlign.justify,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
           fontSize: fontSize, fontWeight: fontWeight, color: textColor,fontFamily: "Nunito-Medium"),
     );

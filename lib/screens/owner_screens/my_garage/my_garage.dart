@@ -37,7 +37,7 @@ class MyGarageScreen extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("GarageOwners").doc(userUid).collection("garageDetails").snapshots(),
+        stream: FirebaseFirestore.instance.collection("GarageDetails").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -52,7 +52,8 @@ class MyGarageScreen extends StatelessWidget {
               return GestureDetector(
                 onTap: (){
                   garageUpDateP.image = null;
-                  Get.to(()=>ShopUpdateDetail(id: doc["id"],));
+                  Get.to(()=>ShopUpdateDetail(id: doc.id,));
+                  debugPrint(doc.id);
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),

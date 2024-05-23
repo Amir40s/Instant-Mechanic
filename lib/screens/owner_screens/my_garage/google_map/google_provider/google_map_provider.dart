@@ -10,7 +10,7 @@ import 'package:http/http.dart'as http;
 
 class GoogleProvider extends ChangeNotifier {
 
-
+  bool suggestions = false;
 
   var searchController = TextEditingController();
 
@@ -26,7 +26,9 @@ class GoogleProvider extends ChangeNotifier {
     zoom: 14,
   );
 
-  List<Marker> marker = <Marker>[];
+  List<Marker> marker = <Marker>[
+
+  ];
 
   Future<Position> getUserCurrentLocation()async{
     await Geolocator.requestPermission().then((value){
@@ -39,9 +41,16 @@ class GoogleProvider extends ChangeNotifier {
 
   saveLocation(context){
     Navigator.pop(context);
+    // marker.clear();
+    notifyListeners();
   }
 
-  moveLocation(latitude,longitude,index) async {
+   moveLocation(latitude,longitude,index) async {
+
+     garageLatitude = latitude.toString();
+     garageLongitude = longitude.toString();
+     notifyListeners();
+    debugPrint("=============${marker.length}=============");
 
     searchController.text = placesList[index]["description"];
     notifyListeners();
@@ -50,24 +59,14 @@ class GoogleProvider extends ChangeNotifier {
         target: LatLng(latitude,longitude),
         zoom: 14
     );
-
-    marker.add(Marker(
-      markerId: MarkerId("1"),
-      position: LatLng(latitude,longitude),
-      infoWindow: InfoWindow(
-        title: "Your Location",
-      ),
+    GoogleMapController controller = await gController.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(double.parse(garageLatitude),double.parse(garageLongitude)),
+            zoom: 14
+        )
     ));
-
-
-    final GoogleMapController controller = await gController.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
-
-    garageLatitude = latitude.toString();
-    garageLongitude = longitude.toString();
-
     notifyListeners();
-
   }
 
 
@@ -99,6 +98,15 @@ class GoogleProvider extends ChangeNotifier {
 
 }
 
+
+//     .add(Marker(
+// markerId: MarkerId("1"),
+// position: LatLng(latitude,longitude),
+// infoWindow: InfoWindow(
+// title: "Your Location",
+// ),
+// )
+// )
 
 
 

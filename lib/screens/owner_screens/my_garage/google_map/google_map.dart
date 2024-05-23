@@ -1,6 +1,5 @@
-import 'package:car_mechanics/helpers/input_fields.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
-import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_provider.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/google_map/google_provider/google_map_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -15,10 +14,7 @@ class GoogleMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var googleP = Provider.of<GoogleProvider>(context);
-    // Provider.of<GoogleProvider>(context).searchController.addListener(
-    //     googleP.onChanged()
-    // );
+    var googleP = Provider.of<GoogleProvider>(context,listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text("Google Map"),
@@ -32,7 +28,12 @@ class GoogleMapScreen extends StatelessWidget {
                 children:[
                   GoogleMap(
                     initialCameraPosition: provider.kGooglePlex,
-                    markers: Set<Marker>.of(googleP.marker),
+                    markers: <Marker>{
+                      Marker(
+                        markerId: MarkerId("1"),
+                        position: LatLng(provider.kGooglePlex.target.latitude,provider.kGooglePlex.target.longitude),
+                      ),
+                    },
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                     onMapCreated: (controller){
@@ -47,6 +48,9 @@ class GoogleMapScreen extends StatelessWidget {
                         SizedBox(height: 5,),
                         // InputField(inputController: provider.searchController,hintText: "Search Places with Name",),
                         TextFormField(
+                          onTap: (){
+                            provider.suggestions = true;
+                          },
                           onChanged: (value){
                             provider.onChanged(value.toString());
                           },
@@ -58,7 +62,7 @@ class GoogleMapScreen extends StatelessWidget {
                             hintText: "Search Places with Name",
                           ),
                         ),
-                        SizedBox(
+                        provider.suggestions == true ? SizedBox(
                             height: 30.h,
                             width: 100.w,
                             child: ListView.builder(
@@ -66,10 +70,10 @@ class GoogleMapScreen extends StatelessWidget {
                                 itemBuilder: (context,index){
                                   return GestureDetector(
                                     onTap: () async {
+                                      provider.suggestions = false;
                                       FocusScope.of(context).unfocus();
                                       List<Location> locations = await locationFromAddress(provider.placesList[index]["description"]);
                                       provider.moveLocation(locations.last.latitude, locations.last.longitude,index);
-
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(10),
@@ -78,7 +82,7 @@ class GoogleMapScreen extends StatelessWidget {
                                       child: Text(provider.placesList[index]["description"]),
                                     ),
                                   );
-                                })),
+                                })):const SizedBox(),
                       ],
                     ),
                   ),
