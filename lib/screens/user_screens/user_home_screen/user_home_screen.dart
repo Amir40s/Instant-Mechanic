@@ -1,9 +1,11 @@
 import 'package:car_mechanics/helpers/helper_text.dart';
+import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../../firebase_services/firebase_services.dart';
 import '../../../helpers/colors.dart';
@@ -13,6 +15,7 @@ import '../../owner_screens/owner_home_screen/components/auto_image_slider.dart'
 import '../../owner_screens/owner_home_screen/components/auto_text_slider.dart';
 import '../../owner_screens/owner_home_screen/components/drawer_header.dart';
 import '../../owner_screens/owner_home_screen/components/drawer_tile.dart';
+import '../../owner_screens/update_garage_details/provider/update_garage_details_provider.dart';
 import '../../start_screens/accuount_selected_screen.dart';
 import '../components/user_home_container.dart';
 import 'garage_detail/garage_detail_screen.dart';
@@ -53,6 +56,8 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ShopDetailsUpdateProvider>(context,listen: false).getUserName();
+    var provider = Provider.of<ShopDetailsUpdateProvider>(context,listen: false);
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -60,14 +65,14 @@ class UserHomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            DrawerContainer(),
+            DrawerContainer(name: provider.userName,),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
-            DrawerTile(text: "My Booking",icon: Icons.calendar_month_outlined,onTap: (){
-              Get.back();
-            },),
-            DrawerTile(text: "Near by Garage",icon: Icons.garage_rounded,onTap: (){
-              Get.back();
-            }),
+            // DrawerTile(text: "My Booking",icon: Icons.calendar_month_outlined,onTap: (){
+            //   Get.back();
+            // },),
+            // DrawerTile(text: "Near by Garage",icon: Icons.garage_rounded,onTap: (){
+            //   Get.back();
+            // }),
             DrawerTile(text: "Logout",icon: Icons.logout_sharp,onTap: (){
               logOutDialogueBox(context);
             }),

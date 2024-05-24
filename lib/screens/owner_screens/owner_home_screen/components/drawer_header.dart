@@ -8,14 +8,15 @@ import '../../../../helpers/helper_text.dart';
 import '../../../../helpers/images_path.dart';
 
 class DrawerContainer extends StatefulWidget {
-  const DrawerContainer({super.key});
-
+  DrawerContainer({super.key,required this.name});
+  String name;
   @override
   State<DrawerContainer> createState() => _DrawerContainerState();
 }
 
 class _DrawerContainerState extends State<DrawerContainer> {
   File? _image;
+
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -57,7 +58,7 @@ class _DrawerContainerState extends State<DrawerContainer> {
             ),
           ),
           SizedBox(height: 20,),
-          TextWidget1(text: "Abdullah Naveed", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: Colors.white),
+          TextWidget1(text: widget.name, fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: Colors.white),
         ],
       ),
     );

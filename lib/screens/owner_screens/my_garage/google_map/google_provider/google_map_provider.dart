@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -26,9 +27,8 @@ class GoogleProvider extends ChangeNotifier {
     zoom: 14,
   );
 
-  List<Marker> marker = <Marker>[
-
-  ];
+  // List<Marker> marker = <Marker>[
+  // ];
 
   Future<Position> getUserCurrentLocation()async{
     await Geolocator.requestPermission().then((value){
@@ -45,12 +45,33 @@ class GoogleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   moveLocation(latitude,longitude,index) async {
+  location(){
+    getUserCurrentLocation().then((value) async {
+      kGooglePlex = CameraPosition(
+        target: LatLng(value.latitude, value.longitude),
+        zoom: 14,
+      );
+      notifyListeners();
+      GoogleMapController controller = await gController.future;
+      await controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(value.latitude,value.longitude),
+              zoom: 14
+          )
+      ));
+      notifyListeners();
+      List<Placemark> placeMarks = await placemarkFromCoordinates(value.latitude, value.longitude);
+      searchController.text = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
+      notifyListeners();
+    });
+  }
+
+  moveLocation(latitude,longitude,index) async {
 
      garageLatitude = latitude.toString();
      garageLongitude = longitude.toString();
      notifyListeners();
-    debugPrint("=============${marker.length}=============");
+    // debugPrint("=============${marker.length}=============");
 
     searchController.text = placesList[index]["description"];
     notifyListeners();
@@ -62,7 +83,7 @@ class GoogleProvider extends ChangeNotifier {
     GoogleMapController controller = await gController.future;
     await controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(double.parse(garageLatitude),double.parse(garageLongitude)),
+            target: LatLng(latitude,longitude),
             zoom: 14
         )
     ));

@@ -49,7 +49,7 @@ class MyGarageScreen extends StatelessWidget {
           }
           return ListView(
             children: snapshot.data!.docs.map((doc) {
-              return GestureDetector(
+              return userUid == doc["userUid"] ? GestureDetector(
                 onTap: (){
                   garageUpDateP.image = null;
                   Get.to(()=>ShopUpdateDetail(id: doc.id,));
@@ -79,7 +79,7 @@ class MyGarageScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              );
+              ):const SizedBox();
             }).toList(),
           );
         },

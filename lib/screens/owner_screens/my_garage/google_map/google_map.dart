@@ -15,6 +15,8 @@ class GoogleMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var googleP = Provider.of<GoogleProvider>(context,listen: false);
+    Provider.of<GoogleProvider>(context,listen: false).getUserCurrentLocation();
+    Provider.of<GoogleProvider>(context,listen: false).location();
     return Scaffold(
         appBar: AppBar(
           title: Text("Google Map"),

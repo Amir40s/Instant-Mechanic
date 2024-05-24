@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,13 +9,32 @@ import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart'as http;
 
 import '../../../../utils/toast_msg.dart';
 import '../../my_garage/google_map/google_provider/google_map_provider.dart';
 
 class ShopDetailsUpdateProvider extends ChangeNotifier{
+
+  bool suggestions = false;
+
+  Completer<GoogleMapController> gController = Completer();
+
+  CameraPosition kGooglePlex = CameraPosition(
+    target: LatLng(31.418715, 73.079109),
+    zoom: 14,
+  );
+
+  var searchController = TextEditingController();
+
+  List<dynamic> placesList = [];
+
+  var uuid = Uuid();
+  String? sessionToken;
 
   var garageNameC = TextEditingController();
   var garageOwnerC = TextEditingController();
@@ -22,6 +43,7 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
   var garageAddressC = TextEditingController();
   String imagePath = "";
   String userUid = "";
+  String userName = "";
 
 
   bool isLoading = false;
@@ -63,8 +85,8 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
             "garageOwnerName" : garageOwnerC.text,
             "garageContact" : garageContactC.text,
             "garageBio" : garageBioC.text,
-            "garageAddressLatitude" : garageLatitude,
-            "garageAddressLongitude" : garageLongitude,
+            "garageAddressLatitude" : garageAddressLat,
+            "garageAddressLongitude" : garageAddressLong,
             "imagePath" : imageUrl.toString(),
             "userUid" : userUid,
             "update" : "updated"
@@ -80,10 +102,6 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     });
     notifyListeners();
   }
-
-
-
-
 
   getDetail(String id)async{
     debugPrint(imagePath);
@@ -101,15 +119,15 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
 
 
       List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(garageAddressLat.toString()), double.parse(garageAddressLong.toString()));
-      
       garageAddressC.text = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
 
-      print(imagePath);
-      print(garageNameC);
-      print(garageOwnerC);
-      print(garageContactC);
-      print(garageBioC);
-      print(garageAddressC);
+      // debugPrint(imagePath);
+      // debugPrint("$garageNameC");
+      // debugPrint("$garageOwnerC");
+      // debugPrint("$garageContactC");
+      // debugPrint("$garageBioC");
+      // debugPrint("$garageAddressC");
+      kGooglePlex = CameraPosition(target: LatLng(double.parse(garageAddressLat), double.parse(garageAddressLong)),zoom: 14);
       notifyListeners();
     }).whenComplete(() {
       isLoading = false;
@@ -120,6 +138,14 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
       notifyListeners();
     });
     notifyListeners();
+  }
+
+  getUserName() async {
+    var userUid = auth.currentUser!.uid;
+    isLoading = true;
+    await fireStore.collection("GarageOwners").doc(userUid).get().then((value) async {
+      userName = value.get("name");
+    });
   }
 
   deleteDetails(String id)async{
@@ -138,4 +164,60 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  saveLocation(context){
+    Navigator.pop(context);
+    // marker.clear();
+    notifyListeners();
+  }
+
+  moveLocation(latitude,longitude,index) async {
+
+    garageAddressLat = latitude.toString();
+    garageAddressLong = longitude.toString();
+    notifyListeners();
+    // debugPrint("=============${marker.length}=============");
+
+    garageAddressC.text = placesList[index]["description"];
+    searchController.text = placesList[index]["description"];
+    notifyListeners();
+
+    kGooglePlex = CameraPosition(
+        target: LatLng(latitude,longitude),
+        zoom: 14
+    );
+    GoogleMapController controller = await gController.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(latitude,longitude),
+            zoom: 14
+        )
+    ));
+    notifyListeners();
+  }
+
+  onChanged(searchResult){
+    if(sessionToken == null){
+      sessionToken == uuid.v4();
+      notifyListeners();
+    }
+    getSuggestion(searchResult);
+  }
+
+  void getSuggestion(String input)async{
+    String kPLACES_API_KEY = "AIzaSyCog7RsE7QqPGoGhJePgBaaXqNbuO8fDAE";
+    String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+    String request = '$baseURL?input=$input&key=$kPLACES_API_KEY&sessiontoken=$sessionToken';
+
+    var response = await http.get(Uri.parse(request));
+    var data = response.body.toString();
+    print("data");
+    print(data);
+    if(response.statusCode == 200){
+      placesList = jsonDecode(response.body.toString())["predictions"];
+      notifyListeners();
+    }else{
+      throw Exception("Failed to Load ");
+    }
+
+  }
 }

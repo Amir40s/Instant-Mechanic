@@ -95,7 +95,7 @@ class _ShopUpdateDetailState extends State<ShopUpdateDetail> {
                           InputField(inputController: garageUpDateP.garageBioC,maxLines: 2,hintText: "Mechanics Bio",),
                           SizedBox(height: fieldH,),
                           TextWidget(text: "Mechanics Address", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-                          InputField(inputController: garageUpDateP.garageAddressC,maxLines: 2,hintText: "Mechanics Address",type: TextInputType.text,
+                          InputField(inputController: garageUpDateP.garageAddressC,maxLines: 2,hintText: "Mechanics Address",type: TextInputType.none,
                               onTap: (){
                                Get.to(()=>UpdateGoogleMapAddress());
                             },

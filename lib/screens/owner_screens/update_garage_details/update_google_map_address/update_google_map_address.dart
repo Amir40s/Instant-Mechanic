@@ -7,6 +7,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/update_garage_details_provider.dart';
+
 
 class UpdateGoogleMapAddress extends StatelessWidget {
   UpdateGoogleMapAddress({super.key});
@@ -14,7 +16,7 @@ class UpdateGoogleMapAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var googleP = Provider.of<GoogleProvider>(context,listen: false);
+    var googleP = Provider.of<ShopDetailsUpdateProvider>(context,listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text("Google Map"),
@@ -23,11 +25,14 @@ class UpdateGoogleMapAddress extends StatelessWidget {
             onTap: (){
               FocusScope.of(context).unfocus();
             },
-            child: Consumer<GoogleProvider>(builder: (context,provider,_){
+            child: Consumer<ShopDetailsUpdateProvider>(builder: (context,provider,_){
               return Stack(
                   children:[
                     GoogleMap(
-                      initialCameraPosition: provider.kGooglePlex,
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(provider.kGooglePlex.target.latitude,provider.kGooglePlex.target.longitude),
+                        zoom: 14.0,
+                      ),
                       markers: <Marker>{
                         Marker(
                           markerId: MarkerId("1"),
@@ -37,7 +42,7 @@ class UpdateGoogleMapAddress extends StatelessWidget {
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
                       onMapCreated: (controller){
-                        provider.gController.complete(controller);
+                        // provider.gController.complete(controller);
                       },
                     ),
                     Padding(
