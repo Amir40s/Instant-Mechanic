@@ -14,9 +14,9 @@ class TextSlider extends StatelessWidget {
       width: 80.w,
       height: 4.h,
       child:CarouselSlider(items: [
-        TextWidget1(text: "Grow Up and Build a Bright Future", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-        TextWidget1(text: "Manage your Garage details", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
-        TextWidget1(text: "Live Chat with Admin", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+        TextWidget1(text: "", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+        TextWidget1(text: "", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
+        TextWidget1(text: "", fontSize: 12.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appColor),
       ],
           options: CarouselOptions(
             height:20.h,

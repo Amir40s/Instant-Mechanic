@@ -36,7 +36,7 @@ class UserBookingScreen extends StatelessWidget {
           SizedBox(height: 20,),
           UserBookingFields(userC: userNameC, title: "Name*"),
           UserBookingFields(userC: userPhoneC, title: "Phone Number*"),
-          UserBookingFields(userC: personNumber, title: "Number of Persons"),
+          // UserBookingFields(userC: personNumber, title: "Number of Persons"),
           UserBookingFields(userC: userMsgC, title: "Message"),
           UserBookingFields(userC: userDateC, title: "Booking Date"),
           UserBookingFields(userC: userTimeC, title: "Booking Time"),

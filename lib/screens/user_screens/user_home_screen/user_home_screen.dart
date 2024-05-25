@@ -130,7 +130,9 @@ class UserHomeScreen extends StatelessWidget {
               ),
             ),
             StreamBuilder(
-                stream: FirebaseFirestore.instance.collection("GarageDetails").snapshots(),
+                stream: FirebaseFirestore.instance.collection("GarageDetails")
+                    .orderBy('id',descending: false)
+                    .snapshots(),
                 builder: (context , AsyncSnapshot<QuerySnapshot> snapshot){
                   if(snapshot.connectionState == ConnectionState.waiting){
                     return CircularProgressIndicator();

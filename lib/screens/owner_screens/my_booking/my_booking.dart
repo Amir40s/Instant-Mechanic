@@ -29,7 +29,8 @@ class MyBooking extends StatelessWidget {
            Tab(
              text: "Cancel",
            ),
-         ]),
+         ]
+         ),
          Expanded(child: TabBarView(
            children: [
              PendingScreen(),
