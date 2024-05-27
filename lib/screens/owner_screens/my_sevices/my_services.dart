@@ -2,8 +2,6 @@ import 'package:car_mechanics/helpers/images_path.dart';
 import 'package:car_mechanics/screens/owner_screens/my_sevices/provider/owner_services_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/my_sevices/serivces_details/service_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';

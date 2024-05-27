@@ -12,8 +12,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../helpers/colors.dart';
 import '../../../../helpers/helper_text.dart';
-import '../../../../helpers/images_path.dart';
-import '../my_garage/google_map/google_map.dart';
 
 class ShopUpdateDetail extends StatefulWidget {
   ShopUpdateDetail({super.key,this.id});

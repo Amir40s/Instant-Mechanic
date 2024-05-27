@@ -1,5 +1,6 @@
 import 'package:car_mechanics/helpers/helper_text.dart';
 import 'package:car_mechanics/screens/owner_screens/my_garage/provider/garage_provider.dart';
+import 'package:car_mechanics/screens/user_screens/user_my_bookings/user_my_bookings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,9 @@ class UserHomeScreen extends StatelessWidget {
           children: [
             DrawerContainer(name: provider.userName,),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
-            // DrawerTile(text: "My Booking",icon: Icons.calendar_month_outlined,onTap: (){
-            //   Get.back();
-            // },),
+            DrawerTile(text: "My Booking",icon: Icons.calendar_month_outlined,onTap: (){
+              Get.to(()=>UserMyBookings());
+            },),
             // DrawerTile(text: "Near by Garage",icon: Icons.garage_rounded,onTap: (){
             //   Get.back();
             // }),
@@ -93,24 +94,14 @@ class UserHomeScreen extends StatelessWidget {
                   children: [
                     Container(
                       width: 100.w,
-                      height: 15.h,
+                      height: 10.h,
                       padding: const EdgeInsets.only(
                         top: 15,
                         right: 15,
                         left: 15,
                       ),
                       decoration: BoxDecoration(color: appColor,borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15))),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                              height: 40,
-                              child: Image.asset(ImagesPath.NOTIFICATION_IMAGE)),
-                          TextWidget(text: "Weekend Discount Offers ❤", fontSize: 10.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appBarTextColor),
-                          SizedBox(width: 1,)
-                        ],
-                      ),
+                      child: SizedBox(width: 1,),
                     ),
                     SizedBox(height: 15.h,)
                   ],
@@ -205,3 +196,17 @@ class UserHomeScreen extends StatelessWidget {
   }
 }
 
+
+
+
+// Row(
+// crossAxisAlignment: CrossAxisAlignment.start,
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// children: [
+// SizedBox(
+// height: 40,
+// child: Image.asset(ImagesPath.NOTIFICATION_IMAGE)),
+// TextWidget(text: "Weekend Discount Offers ❤", fontSize: 10.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: appBarTextColor),
+// SizedBox(width: 1,)
+// ],
+// )

@@ -7,10 +7,12 @@ import '../../../../../helpers/helper_text.dart';
 import '../../../../../helpers/input_fields.dart';
 
 class UserBookingFields extends StatelessWidget {
-  UserBookingFields({super.key,required this.userC,required this.title});
+  UserBookingFields({super.key,required this.userC,required this.title,required this.type,this.onTap});
 
   TextEditingController userC;
   String title;
+  TextInputType type;
+  VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class UserBookingFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextWidget(text: title, fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: appColor),
-        InputField(inputController: userC),
+        InputField(inputController: userC,type: type,onTap: onTap,),
         SizedBox(height: 10,),
       ],
     );

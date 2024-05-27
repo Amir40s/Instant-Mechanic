@@ -1,4 +1,3 @@
-import 'package:car_mechanics/screens/owner_screens/my_sevices/provider/owner_services_provider.dart';
 import 'package:car_mechanics/screens/owner_screens/update_garage_services/provider/update_service_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';

@@ -1,13 +1,10 @@
 import 'package:car_mechanics/helpers/helper_text.dart';
 import 'package:car_mechanics/helpers/images_path.dart';
 import 'package:car_mechanics/helpers/submit_button.dart';
-import 'package:car_mechanics/screens/start_screens/owner_start_screen/owner_activity.dart';
 import 'package:car_mechanics/screens/start_screens/owner_start_screen/owner_start_services/owner_start_services.dart';
-import 'package:car_mechanics/screens/start_screens/user_start_screens/user_activity.dart';
 import 'package:car_mechanics/screens/start_screens/user_start_screens/user_start_services/user_start_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:get/get.dart';
 
 import '../../helpers/colors.dart';
 

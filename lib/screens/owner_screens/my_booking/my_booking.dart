@@ -34,7 +34,7 @@ class MyBooking extends StatelessWidget {
          Expanded(child: TabBarView(
            children: [
              PendingScreen(),
-             const CancelScreen()
+             CancelScreen()
            ],
          ))
        ],

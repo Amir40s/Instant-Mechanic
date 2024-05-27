@@ -82,7 +82,7 @@ class GarageDetailScreen extends StatelessWidget {
                 SizedBox(height: 10,),
                 InkWell(
                     onTap: (){
-                      Get.to(()=>UserBookingScreen(userUid: userUid,));
+                      Get.to(()=>UserBookingScreen(userUid: userUid, shopName: shopName, ownerName: ownerName,));
                     },
                     child: GDButton(text: "Book Now",icon: CupertinoIcons.calendar,)),
                 SizedBox(height: 5,),

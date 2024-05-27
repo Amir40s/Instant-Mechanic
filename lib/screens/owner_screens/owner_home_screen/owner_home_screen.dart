@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:car_mechanics/helpers/helper_text.dart';
 import 'package:car_mechanics/helpers/images_path.dart';
 import 'package:car_mechanics/screens/owner_screens/my_booking/my_booking.dart';
@@ -112,7 +111,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 children: [
                   Container(
                     width: 100.w,
-                    height: 15.h,
+                    height: 10.h,
                     padding: const EdgeInsets.only(
                       top: 15,
                       right: 15,

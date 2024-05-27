@@ -16,7 +16,6 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart'as http;
 
 import '../../../../utils/toast_msg.dart';
-import '../../my_garage/google_map/google_provider/google_map_provider.dart';
 
 class ShopDetailsUpdateProvider extends ChangeNotifier{
 

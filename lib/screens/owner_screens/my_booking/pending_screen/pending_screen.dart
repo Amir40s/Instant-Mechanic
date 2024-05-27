@@ -20,7 +20,7 @@ class PendingScreen extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection("GarageOwners").doc(userId).collection("bookings").snapshots(),
           builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
-            if (!snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -31,11 +31,10 @@ class PendingScreen extends StatelessWidget {
             return ListView(
               children: snapshot.data!.docs.map((doc){
 
-                return GestureDetector(
+                return doc["bookingStatus"] == "pending" ? GestureDetector(
                   onTap: (){
                     Get.to(()=>BookingDetails(
-                      bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"], date: doc["bookingDate"], time: doc["bookingTime"],
-
+                      bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"], date: doc["bookingDate"], time: doc["bookingTime"], status: doc["bookingStatus"],
                     ));
                   },
                   child: Container(
@@ -54,12 +53,12 @@ class PendingScreen extends StatelessWidget {
                         TextWidget(text: "Booking Date : ${doc["bookingDate"]}", fontSize: 14.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: appColor),
                         SizedBox(height: heightS,),
-                        TextWidget(text: "Booking Status : pending", fontSize: 14.dp, fontWeight: FontWeight.w500,
+                        TextWidget(text: "Booking Status : ${doc["bookingStatus"]}", fontSize: 14.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: appColor),
                       ],
                     ),
                   ),
-                );
+                ) : SizedBox();
               }).toList(),
             );
           }
