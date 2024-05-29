@@ -1,3 +1,4 @@
+import 'package:car_mechanics/screens/owner_screens/my_booking/approved_screen/approved_screen.dart';
 import 'package:car_mechanics/screens/owner_screens/my_booking/cancel_screen/cancel_screen.dart';
 import 'package:car_mechanics/screens/owner_screens/my_booking/pending_screen/pending_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class MyBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: appColor,
@@ -24,6 +25,9 @@ class MyBooking extends StatelessWidget {
              indicatorSize: TabBarIndicatorSize.tab,
              tabs: [
            Tab(
+             text: "Approved",
+           ),
+               Tab(
              text: "Pending",
            ),
            Tab(
@@ -33,6 +37,7 @@ class MyBooking extends StatelessWidget {
          ),
          Expanded(child: TabBarView(
            children: [
+             ApprovedScreen(),
              PendingScreen(),
              CancelScreen()
            ],

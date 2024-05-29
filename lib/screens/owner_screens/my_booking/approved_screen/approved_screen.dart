@@ -1,15 +1,14 @@
+import 'package:car_mechanics/helpers/colors.dart';
+import 'package:car_mechanics/helpers/helper_text.dart';
+import 'package:car_mechanics/screens/owner_screens/my_booking/booking_details/booking_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 
-import '../../../../helpers/colors.dart';
-import '../../../../helpers/helper_text.dart';
-import '../booking_details/booking_details.dart';
-
-class CancelScreen extends StatelessWidget {
-  CancelScreen({super.key});
+class ApprovedScreen extends StatelessWidget {
+  ApprovedScreen({super.key});
 
   var userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -32,12 +31,11 @@ class CancelScreen extends StatelessWidget {
               return ListView(
                 children: snapshot.data!.docs.map((doc){
 
-                  return doc["bookingStatus"] == "cancel" ? GestureDetector(
+                  return doc["bookingStatus"] == "approved" ? GestureDetector(
                     onTap: (){
                       Get.to(()=>BookingDetails(
-                        bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"], date: doc["bookingDate"],
-                        time: doc["bookingTime"], status: doc["bookingStatus"], bookingUserUid: doc["bookingUserUid"],
-
+                        bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"],
+                        date: doc["bookingDate"], time: doc["bookingTime"], status: doc["bookingStatus"], bookingUserUid: doc["bookingUserUid"],
                       ));
                     },
                     child: Container(

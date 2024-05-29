@@ -36,7 +36,7 @@ class MyGarageScreen extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("GarageDetails").snapshots(),
+        stream: FirebaseFirestore.instance.collection("GarageDetails").orderBy('id',descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(

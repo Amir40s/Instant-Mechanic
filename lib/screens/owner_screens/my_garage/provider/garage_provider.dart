@@ -41,9 +41,10 @@ class GarageProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
     var userUid = auth.currentUser!.uid;
-    List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(garageLatitude.toString()), double.parse(garageLongitude.toString()));
+    List<Placemark> place = await placemarkFromCoordinates(double.parse(garageLatitude), double.parse(garageLongitude));
 
-    garageAddressC = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
+    garageAddressC = "${place.reversed.last.street}, ${place.reversed.last.subLocality},"
+        " ${place.reversed.last.locality}, ${place.reversed.last.postalCode}${place.reversed.last.country}";
 
     String id = DateTime.now().millisecondsSinceEpoch.toString();
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(id);

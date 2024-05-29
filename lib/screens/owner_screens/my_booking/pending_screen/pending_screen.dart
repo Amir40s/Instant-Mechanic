@@ -18,7 +18,7 @@ class PendingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection("GarageOwners").doc(userId).collection("bookings").snapshots(),
+          stream: FirebaseFirestore.instance.collection("GarageOwners").doc(userId).collection("bookings").orderBy('id',descending: true).snapshots(),
           builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -34,7 +34,8 @@ class PendingScreen extends StatelessWidget {
                 return doc["bookingStatus"] == "pending" ? GestureDetector(
                   onTap: (){
                     Get.to(()=>BookingDetails(
-                      bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"], date: doc["bookingDate"], time: doc["bookingTime"], status: doc["bookingStatus"],
+                      bookingId: doc["id"], name: doc["customerName"], phone: doc["customerPhone"], msg: doc["customerMsg"],
+                      date: doc["bookingDate"], time: doc["bookingTime"], status: doc["bookingStatus"], bookingUserUid: doc["bookingUserUid"],
                     ));
                   },
                   child: Container(

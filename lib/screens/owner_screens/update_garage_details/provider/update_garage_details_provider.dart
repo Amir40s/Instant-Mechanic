@@ -117,15 +117,10 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
       userUid = value.get("userUid");
 
 
-      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(garageAddressLat.toString()), double.parse(garageAddressLong.toString()));
-      garageAddressC.text = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
+      List<Placemark> place = await placemarkFromCoordinates(double.parse(garageAddressLat.toString()), double.parse(garageAddressLong.toString()));
+      garageAddressC.text = "${place.reversed.last.street}, ${place.reversed.last.subLocality},"
+          " ${place.reversed.last.locality}, ${place.reversed.last.postalCode}${place.reversed.last.country}";
 
-      // debugPrint(imagePath);
-      // debugPrint("$garageNameC");
-      // debugPrint("$garageOwnerC");
-      // debugPrint("$garageContactC");
-      // debugPrint("$garageBioC");
-      // debugPrint("$garageAddressC");
       kGooglePlex = CameraPosition(target: LatLng(double.parse(garageAddressLat), double.parse(garageAddressLong)),zoom: 14);
       notifyListeners();
     }).whenComplete(() {
@@ -139,11 +134,19 @@ class ShopDetailsUpdateProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  getUserName() async {
+  getOwnerName() async {
     var userUid = auth.currentUser!.uid;
-    isLoading = true;
     await fireStore.collection("GarageOwners").doc(userUid).get().then((value) async {
       userName = value.get("name");
+      notifyListeners();
+    });
+  }
+
+  getUserName() async {
+    var userUid = auth.currentUser!.uid;
+    await fireStore.collection("UserOwners").doc(userUid).get().then((value) async {
+      userName = value.get("name");
+      notifyListeners();
     });
   }
 

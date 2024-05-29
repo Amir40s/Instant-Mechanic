@@ -58,6 +58,7 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ShopDetailsUpdateProvider>(context,listen: false).getUserName();
+    Provider.of<ShopDetailsUpdateProvider>(context,listen: false).getOwnerName();
     var provider = Provider.of<ShopDetailsUpdateProvider>(context,listen: false);
     return Scaffold(
       drawer: Drawer(
@@ -66,7 +67,9 @@ class UserHomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            DrawerContainer(name: provider.userName,),
+            Consumer<ShopDetailsUpdateProvider>(builder: (context,provider,child){
+              return DrawerContainer(name: provider.userName,);
+            }),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
             DrawerTile(text: "My Booking",icon: Icons.calendar_month_outlined,onTap: (){
               Get.to(()=>UserMyBookings());
@@ -122,7 +125,7 @@ class UserHomeScreen extends StatelessWidget {
             ),
             StreamBuilder(
                 stream: FirebaseFirestore.instance.collection("GarageDetails")
-                    .orderBy('id',descending: false)
+                    .orderBy('id',descending: true)
                     .snapshots(),
                 builder: (context , AsyncSnapshot<QuerySnapshot> snapshot){
                   if(snapshot.connectionState == ConnectionState.waiting){

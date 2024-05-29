@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../helpers/colors.dart';
 import '../../../../helpers/helper_text.dart';
@@ -10,11 +11,12 @@ import 'custom_container.dart';
 
 class BookingDetails extends StatelessWidget {
   BookingDetails({super.key,required this.name,required this.bookingId,required this.phone,
-  required this.msg,required this.date,required this.time,required this.status
+  required this.msg,required this.date,required this.time,required this.status,required this.bookingUserUid
   });
 
   var userId = FirebaseAuth.instance.currentUser!.uid;
 
+  String bookingUserUid;
   String bookingId;
   String name;
   String phone;
@@ -45,19 +47,24 @@ class BookingDetails extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
+                    status == "approved" ? GestureDetector(
                         onTap: (){
-                          bookingP.statusApproved(userId,bookingId);
+                          bookingP.statusCanceled(bookingUserUid,bookingId);
+                        },
+                        child: CustomContainer().statusContainer("Cancel"))
+                        : GestureDetector(
+                        onTap: (){
+                          bookingP.statusApproved(bookingUserUid,bookingId);
                         },
                         child: CustomContainer().statusContainer("Approve")),
                     status == "pending" ? GestureDetector(
                         onTap: (){
-                          bookingP.statusCanceled(userId,bookingId);
+                          bookingP.statusCanceled(bookingUserUid,bookingId);
                         },
                         child: CustomContainer().statusContainer("Cancel")) :
                     GestureDetector(
                         onTap: (){
-                          bookingP.deleteBooking(userId,bookingId);
+                          bookingP.deleteBooking(bookingUserUid,bookingId);
                         },
                         child: CustomContainer().statusContainer("Delete")),
                   ],
@@ -79,7 +86,12 @@ class BookingDetails extends StatelessWidget {
                     TextWidget(text: "Booking Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
                     CustomContainer().bookingContainer(bookingId),
                     CustomContainer().bookingContainer(name),
-                    CustomContainer().bookingContainer(phone),
+                    GestureDetector(
+                        onTap: () async {
+                          final Uri phoneNumber = Uri.parse('tel:$phone');
+                          await launchUrl(phoneNumber);
+                        },
+                        child: CustomContainer().bookingContainer(phone)),
                     CustomContainer().bookingContainer(msg),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

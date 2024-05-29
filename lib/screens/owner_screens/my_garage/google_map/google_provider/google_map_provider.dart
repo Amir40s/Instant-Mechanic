@@ -54,14 +54,16 @@ class GoogleProvider extends ChangeNotifier {
       notifyListeners();
       GoogleMapController controller = await gController.future;
       await controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(
+          kGooglePlex = CameraPosition(
               target: LatLng(value.latitude,value.longitude),
               zoom: 14
           )
       ));
-      notifyListeners();
-      List<Placemark> placeMarks = await placemarkFromCoordinates(value.latitude, value.longitude);
-      searchController.text = "${placeMarks.reversed.last.subLocality.toString()}  ${placeMarks.reversed.last.subAdministrativeArea.toString()}";
+      garageLatitude = value.latitude.toString();
+      garageLongitude = value.longitude.toString();
+      List<Placemark> place = await placemarkFromCoordinates(value.latitude, value.longitude);
+      searchController.text = "${place.reversed.last.street}, ${place.reversed.last.subLocality},"
+          " ${place.reversed.last.locality}, ${place.reversed.last.postalCode} ${place.reversed.last.country}";
       notifyListeners();
     });
   }

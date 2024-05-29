@@ -5,10 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
 class GDTile extends StatelessWidget {
-  GDTile({super.key,required this.text,required this.image,this.icon});
+  GDTile({super.key,required this.text,required this.image,this.icon,this.onTap});
 
   String text,image;
   IconData? icon;
+  VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +25,9 @@ class GDTile extends StatelessWidget {
               TextWidget(text: text, fontSize: 14.dp, fontWeight: FontWeight.w600, isTextCenter: false, textColor: appColor),
             ],
           ),
-          Image.asset(image,height: 3.5.h,),
+          GestureDetector(
+              onTap: onTap,
+              child: Image.asset(image,height: 3.5.h,)),
         ],
       ),
     );

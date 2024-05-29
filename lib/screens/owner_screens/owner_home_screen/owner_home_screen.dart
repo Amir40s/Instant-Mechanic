@@ -13,7 +13,6 @@ import 'package:car_mechanics/screens/start_screens/accuount_selected_screen.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../firebase_services/firebase_services.dart';
@@ -60,17 +59,18 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     );
   }
 
-  // bool _isVerified = false;
+  bool _isVerified = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // checkUser();
+    checkUser();
   }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ShopDetailsUpdateProvider>(context,listen: false).getOwnerName();
     Provider.of<ShopDetailsUpdateProvider>(context,listen: false).getUserName();
     var provider = Provider.of<ShopDetailsUpdateProvider>(context,listen: false);
     var garageP = Provider.of<GarageProvider>(context,listen: false);
@@ -81,7 +81,9 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            DrawerContainer(name: provider.userName,),
+            Consumer<ShopDetailsUpdateProvider>(builder: (context,provider,child){
+              return DrawerContainer(name: provider.userName,);
+            }),
             DrawerTile(text: "Home",icon: Icons.home,onTap: (){Get.back();},),
             Visibility(
               visible: true,
@@ -102,7 +104,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
         backgroundColor: appColor,
         title: TextWidget(text: "Shop Owner", fontSize: 14.dp, fontWeight: FontWeight.w500, isTextCenter: true, textColor: Colors.white),
       ),
-      body: Column(
+      body:
+      Column(
         children: [
           Stack(
             alignment: AlignmentDirectional.bottomCenter,
@@ -133,7 +136,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             ],
           ),
           SizedBox(height: 20,),
-          if(true)
+          if(_isVerified == true)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
             child: Column(
@@ -160,28 +163,27 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
               ],
             ),
           ),
-
-          // if(_isVerified == false)
-          // Text("Please wait for account Approval"),
+          if(_isVerified == false)
+          Text("Please wait for account Approval"),
         ],
       ),
     );
   }
 
-  // void checkUser() async{
-  //   await fireStore.collection("GarageOwners").doc(auth.currentUser?.uid.toString())
-  //       .get().then((value) => {
-  //         if (value.exists){
-  //           if(value.get("status") == "approved"){
-  //             setState(() {
-  //               _isVerified = true;
-  //             })
-  //           }else{
-  //             setState(() {
-  //               _isVerified = false;
-  //             })
-  //           }
-  //         }
-  //   });
-  // }
+  void checkUser() async{
+    await fireStore.collection("GarageOwners").doc(auth.currentUser?.uid.toString())
+        .get().then((value) => {
+          if (value.exists){
+            if(value.get("status") == "approved"){
+              setState(() {
+                _isVerified = true;
+              })
+            }else{
+              setState(() {
+                _isVerified = false;
+              })
+            }
+          }
+    });
+  }
 }

@@ -71,21 +71,21 @@ class BookingProvider extends ChangeNotifier{
     await fireStore.collection("GarageOwners").doc(userUid).collection("bookings").doc(id).update(
         {
           "bookingStatus" : "approved",
-        }).whenComplete(() {
-      isLoading = false;
-      ToastMsg().toastMsg("Booking Approved");
-      Get.back();
-      notifyListeners();
-    }).then((value) async {
+        }).then((value) async {
       await fireStore.collection("UserOwners").doc(userid).collection("userBookings").doc(id).update(
           {
             "bookingUserUid" : userid,
             "bookingStatus" : "Approved",
             "id" : id,
           });
+    }).whenComplete(() {
+      isLoading = false;
+      ToastMsg().toastMsg("Booking Approved");
+      Get.back();
+      notifyListeners();
     }).onError((error, stackTrace)  {
       isLoading = false;
-      ToastMsg().toastMsg(error.toString());
+      // ToastMsg().toastMsg(error.toString());
       notifyListeners();
     });
     notifyListeners();
@@ -94,19 +94,26 @@ class BookingProvider extends ChangeNotifier{
   statusCanceled(String userUid,String id)async{
     isLoading = true;
     notifyListeners();
-    var userUid = auth.currentUser!.uid;
+    var uid = auth.currentUser!.uid;
 
-    await fireStore.collection("GarageOwners").doc(userUid).collection("bookings").doc(id).update(
+    await fireStore.collection("GarageOwners").doc(uid).collection("bookings").doc(id).update(
         {
           "bookingStatus" : "cancel",
-        }).whenComplete(() {
+        }).then((value) async {
+      await fireStore.collection("UserOwners").doc(userUid).collection("userBookings").doc(id).update(
+          {
+            "bookingUserUid" : userUid,
+            "bookingStatus" : "Cancelled",
+            "id" : id,
+          });
+    }).whenComplete(() {
       isLoading = false;
       ToastMsg().toastMsg("Booking Cancelled");
       Get.back();
       notifyListeners();
     }).onError((error, stackTrace)  {
       isLoading = false;
-      ToastMsg().toastMsg(error.toString());
+      // ToastMsg().toastMsg(error.toString());
       notifyListeners();
     });
     notifyListeners();
@@ -124,7 +131,7 @@ class BookingProvider extends ChangeNotifier{
       notifyListeners();
     }).onError((error, stackTrace)  {
       isLoading = false;
-      ToastMsg().toastMsg(error.toString());
+      // ToastMsg().toastMsg(error.toString());
       notifyListeners();
     });
     notifyListeners();

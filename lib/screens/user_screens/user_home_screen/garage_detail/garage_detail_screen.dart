@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../helpers/helper_text.dart';
 import '../../../../helpers/images_path.dart';
@@ -26,6 +27,7 @@ class GarageDetailScreen extends StatelessWidget {
   String shopBio;
   String userUid;
   double latitude,longitude;
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +90,14 @@ class GarageDetailScreen extends StatelessWidget {
                 SizedBox(height: 5,),
                 Divider(thickness: 1.2,color: appColor,),
                 TextWidget(text: "Shop Owner Details", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: false, textColor: appColor),
-                GDTile(text: ownerName, image: ImagesPath.WHATSAPP_IMAGE,icon: CupertinoIcons.person_fill,),
-                GDTile(text: ownerPhone, image: ImagesPath.PHONE_IMAGE,icon: Icons.phone_android,),
+                GDTile(text: ownerName, image: ImagesPath.WHATSAPP_IMAGE,icon: CupertinoIcons.person_fill,onTap: () async {
+                  final Uri whatsAppNumber = Uri.parse('https://wa.me/$ownerPhone');
+                  await launchUrl(whatsAppNumber);
+                },),
+                GDTile(text: ownerPhone, image: ImagesPath.PHONE_IMAGE,icon: Icons.phone_android,onTap: () async {
+                  final Uri phoneNumber = Uri.parse('tel:$ownerPhone');
+                  await launchUrl(phoneNumber);
+                },),
                 Divider(color: appColor,thickness: 1.2,),
                 Row(
                   children: [

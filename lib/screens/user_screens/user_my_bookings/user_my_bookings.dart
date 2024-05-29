@@ -22,7 +22,7 @@ class UserMyBookings extends StatelessWidget {
         title: TextWidget(text: "Bookings", fontSize: 16.dp, fontWeight: FontWeight.bold, isTextCenter: true, textColor: Colors.white),
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection("UserOwners").doc(userId).collection("userBookings").snapshots(),
+          stream: FirebaseFirestore.instance.collection("UserOwners").doc(userId).collection("userBookings").orderBy('id',descending: true).snapshots(),
           builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
